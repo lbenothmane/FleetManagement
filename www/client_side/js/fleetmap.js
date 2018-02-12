@@ -1,6 +1,14 @@
-function myCtrl($scope, $interval, MapService, ChartService, SessionService){
+function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartService, SessionService){
     //Initialize
+    /*
+    // Probably only want this for a demo
     $scope.username = SessionService.getCurrentUser();
+    if($scope.username == null){
+        window.location.href = "login.php";
+    }
+    */
+    $scope.username = "kwberner"; // Comment out for demo
+    NavbarService.initializeNavbar($scope);
     $scope.selectedVehicle = "0";
 
     $scope.speedArray = [];
@@ -43,5 +51,5 @@ function myCtrl($scope, $interval, MapService, ChartService, SessionService){
 }//End controller
 
 angular
-  .module('myApp', ['MapService', 'ChartService', 'SessionService'])
+  .module('myApp', ['NavbarService', 'MapService', 'ChartService', 'SessionService'])
   .controller('myCtrl', myCtrl);

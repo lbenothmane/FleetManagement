@@ -13,11 +13,11 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<?php include("navbar.html");?>
-
-		<div class="container-fluid">
-			<div class="row">
-				<div ng-app="myApp" ng-controller="myCtrl">
+		<div ng-app="myApp" ng-controller="myCtrl">
+			<?php include("navbar.html");?>
+			<div class="container-fluid">
+				<div class="row">
+					<h1>{{username}}'s Fleet</h1>
 					<div id="map" ng-model="myMap"></div>
 	                <br>
 	                <select ng-model="selectedVehicle" ng-change="zoom();updateCharts();">
@@ -45,6 +45,7 @@
 			</div>
 		</div>
 		<script src="js/fleetmap.js"></script>
+		<script src="js/services/navbarService.js"></script>
 		<script src="js/services/mapService.js"></script>
 		<script src="js/services/chartService.js"></script>
 		<script src="js/services/sessionService.js"></script>
