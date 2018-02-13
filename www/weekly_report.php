@@ -25,11 +25,11 @@
 <main role="main" id="main-content">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 col-md-12">
-                <h3>Weekly Reports</h3>
+            <div class="col-xs-6 col-md-6">
+                <h3>Weekly Reports (1st Semester)</h3>
                 <a href="docs/sdmay18-18_report01.pdf">Report 1</a></br>
                 <a href="docs/sdmay18-18_report02.pdf">Report 2</a></br>
-        	    <a href="docs/sdmay18-18_report03.pdf">Report 3</a></br>
+                <a href="docs/sdmay18-18_report03.pdf">Report 3</a></br>
                 <a href="docs/sdmay18-18_report04.pdf">Report 4</a></br>
                 <a href="docs/sdmay18-18_report05.pdf">Report 5</a></br>
                 <a href="docs/sdmay18-18_report06.pdf">Report 6</a></br>
@@ -37,6 +37,16 @@
                 <a href="docs/sdmay18-18_report08.pdf">Report 8</a></br>
                 <a href="docs/sdmay18-18_report09.pdf">Report 9</a></br>
                 <a href="docs/sdmay18-18_report10.pdf">Report 10</a></br>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <h3>Biweekly Reports (2nd Semester)</h3>
+                <a href="docs/Status Report 1.pdf">Report 1</a></br>
+                <a href="docs/Status Report 2.pdf">Report 2</a></br>
+                <!-- <a href="docs/Status Report 3.pdf">Report 3</a></br> -->
+                <!-- <a href="docs/Status Report 4.pdf">Report 4</a></br> -->
+                <!-- <a href="docs/Status Report 5.pdf">Report 5</a></br> -->
+                <!-- <a href="docs/Status Report 6.pdf">Report 6</a></br> -->
+                <!-- <a href="docs/Status Report 7.pdf">Report 7</a></br> -->
             </div>
         </div>
     </div>

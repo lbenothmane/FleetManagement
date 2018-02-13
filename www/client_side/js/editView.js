@@ -2,10 +2,13 @@ function editViewCtrl($scope, NavbarService, SessionService){
     NavbarService.initializeNavbar($scope);
 
     $scope.fleetOptions = ['Remaining Fuel', 'Gas Consumption'];
-    $scope.fleetSelection = ['Remaining Fuel', 'Gas Consumption']; // TODO: Load current settings
+    $scope.fleetSelection = JSON.parse(localStorage.getItem("fleetCharts"));
 
     $scope.vehicleOptions = ['Current Speed'];
-    $scope.vehicleSelection = ['Current Speed']; // TODO: Load current settings
+    $scope.vehicleSelection = JSON.parse(localStorage.getItem("vehicleCharts"));
+    if($scope.vehicleSelection == null){
+      $scope.vehicleSelection = [];
+    }
 
     $scope.fleetToggle = function(fleetOption) {
        var idx = $scope.fleetSelection.indexOf(fleetOption);
@@ -17,6 +20,8 @@ function editViewCtrl($scope, NavbarService, SessionService){
        }
 
        console.log($scope.fleetSelection);
+
+       localStorage.setItem("fleetCharts", JSON.stringify($scope.fleetSelection));
     }
 
     $scope.vehicleToggle = function(vehicleOption) {
@@ -29,6 +34,8 @@ function editViewCtrl($scope, NavbarService, SessionService){
        }
 
        console.log($scope.vehicleSelection);
+
+       localStorage.setItem("vehicleCharts", JSON.stringify($scope.vehicleSelection));
     }
 
     $scope.saveChanges = function() { // TODO: POST updates to settings

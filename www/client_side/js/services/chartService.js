@@ -6,6 +6,16 @@ angular.module('ChartService',[])
         // $scope.vehicleIDs
         // var url = "http://35.193.191.2:8080/vehicle/" + $scope.username;
 
+        var fleetCharts = JSON.parse(localStorage.getItem("fleetCharts"));
+        if(fleetCharts.indexOf("Remaining Fuel") > -1){
+            remainingFuelChart($scope);
+        }
+        if(fleetCharts.indexOf("Gas Consumption") > -1){
+            gasConsumptionChart($scope);
+        }
+    };
+
+    var remainingFuelChart = function($scope){
         var url = "http://35.193.191.2:8080/vehicle/";
         $.get(url, function(data, status){
             var fuelData = [];
@@ -57,9 +67,9 @@ angular.module('ChartService',[])
             }
             $scope.leftChart = new Chart(leftCtx, leftConfig);
         });
+    }
 
-
-
+    var gasConsumptionChart = function($scope){
         var rightCtx = document.getElementById("rightCanvas");
         var rightConfig = {
             type: 'line',
@@ -102,27 +112,9 @@ angular.module('ChartService',[])
             }
         }
         $scope.rightChart = new Chart(rightCtx, rightConfig);
-    };
-
-    this.updateCharts = function($scope) {
-        //Clear out old charts
-        $scope.leftChart.destroy();
-        $scope.rightChart.destroy();
-
-        //Turn off interval if it's active
-        if(angular.isDefined($scope.currentSpeedInterval)){
-            $interval.cancel($scope.currentSpeedInterval);
-            $scope.currentSpeedInterval = undefined;
-        }
-
-        if($scope.selectedVehicle == 0){
-            ChartService.initCharts($scope);
-        }else{
-            individualCharts($scope);
-        }
     }
 
-    var individualCharts = function($scope) {
+    var currentSpeedChart = function($scope){
         var leftCtx = document.getElementById("leftCanvas");
         var newConfig = {
             type: 'line',
@@ -190,6 +182,35 @@ angular.module('ChartService',[])
         }
         getCurrentSpeed();
         $scope.currentSpeedInterval = $interval(getCurrentSpeed, 500);
+    }
+
+    this.updateCharts = function($scope) {
+        //Clear out old charts
+        if($scope.leftChart){
+            $scope.leftChart.destroy();
+        }
+        if($scope.rightChart){
+            $scope.rightChart.destroy();
+        }
+
+        //Turn off interval if it's active
+        if(angular.isDefined($scope.currentSpeedInterval)){
+            $interval.cancel($scope.currentSpeedInterval);
+            $scope.currentSpeedInterval = undefined;
+        }
+
+        if($scope.selectedVehicle == 0){
+            ChartService.initCharts($scope);
+        }else{
+            individualCharts($scope);
+        }
+    }
+
+    var individualCharts = function($scope) {
+        var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
+        if(vehicleCharts.indexOf("Current Speed") > -1){
+            currentSpeedChart($scope);
+        }
     }
 
     var getFormattedTime = function() {
