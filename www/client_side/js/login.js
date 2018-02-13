@@ -1,4 +1,4 @@
-function loginCtrl($scope, $window, NavbarService, SessionService){
+function loginCtrl($scope, NavbarService, SessionService){
     SessionService.clearSession();
     NavbarService.initializeNavbar($scope);
 
