@@ -13,6 +13,7 @@ angular.module('ChartService',[])
         if(fleetCharts.indexOf("Gas Consumption") > -1){
             gasConsumptionChart($scope);
         }
+
     };
 
     var remainingFuelChart = function($scope){
@@ -31,8 +32,8 @@ angular.module('ChartService',[])
             }
             // console.log("FuelData: " + fuelData);
 
-            var leftCtx = document.getElementById("leftCanvas");
-            var leftConfig = {
+            var context = document.getElementById("remainingFuelCanvas");
+            var config = {
                 type: 'bar',
                 data: {
                     labels: vehicleLabels,
@@ -65,13 +66,13 @@ angular.module('ChartService',[])
                     }
                 }
             }
-            $scope.leftChart = new Chart(leftCtx, leftConfig);
+            $scope.remainingFuelChart = new Chart(context, config);
         });
     }
 
     var gasConsumptionChart = function($scope){
-        var rightCtx = document.getElementById("rightCanvas");
-        var rightConfig = {
+        var context = document.getElementById("gasConsumptionCanvas");
+        var config = {
             type: 'line',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June"],
@@ -111,12 +112,12 @@ angular.module('ChartService',[])
                 }
             }
         }
-        $scope.rightChart = new Chart(rightCtx, rightConfig);
+        $scope.gasConsumptionChart = new Chart(context, config);
     }
 
     var currentSpeedChart = function($scope){
-        var leftCtx = document.getElementById("leftCanvas");
-        var newConfig = {
+        var context = document.getElementById("currentSpeedCanvas");
+        var config = {
             type: 'line',
             data: {
                 labels: $scope.labelArray,
@@ -159,7 +160,7 @@ angular.module('ChartService',[])
                 }
             }
         }
-        $scope.leftChart = new Chart(leftCtx, newConfig);
+        $scope.currentSpeedChart = new Chart(context, config);
 
         var getCurrentSpeed = function(){
             var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
@@ -177,7 +178,7 @@ angular.module('ChartService',[])
                 // newConfig.data.datasets.forEach(function(dataset){
                 //  dataset.data = $scope.speedArray;
                 // });
-                $scope.leftChart.update();
+                $scope.currentSpeedChart.update();
             });
         }
         getCurrentSpeed();

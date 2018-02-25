@@ -28,22 +28,29 @@
 	                <button ng-click="refresh()">Refresh Map</button>
 				</div>
 			</div>
+		
+
+			<hr>
+			<div class="row">
+				<div class="col-md-12">
+					<h3>Stats</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6" ng-show="remainingFuelChart">
+					<canvas id="remainingFuelCanvas"></canvas>
+				</div>
+				<div class="col-md-6" ng-show="gasConsumptionChart">
+					<canvas id="gasConsumptionCanvas"></canvas>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6" ng-show="currentSpeedChart">
+					<canvas id="currentSpeedCanvas"></canvas>
+				</div>
+			</div>
 		</div>
 
-		<hr>
-		<div class="row">
-			<div class="col-md-12">
-				<h3>Stats</h3>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<canvas id="leftCanvas"></canvas>
-			</div>
-			<div class="col-md-6">
-				<canvas id="rightCanvas"></canvas>
-			</div>
-		</div>
 		<script src="js/fleetmap.js"></script>
 		<script src="js/services/navbarService.js"></script>
 		<script src="js/services/mapService.js"></script>
