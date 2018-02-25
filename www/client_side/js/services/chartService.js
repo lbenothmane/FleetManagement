@@ -16,6 +16,38 @@ angular.module('ChartService',[])
 
     };
 
+    var individualCharts = function($scope) {
+        var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
+        if(vehicleCharts.indexOf("Current Speed") > -1){
+            currentSpeedChart($scope);
+        }
+    }
+
+    this.updateCharts = function($scope) {
+        //Clear out old charts
+        if($scope.remainingFuelChart){
+            $scope.remainingFuelChart.destroy();
+        }
+        if($scope.gasConsumptionChart){
+            $scope.gasConsumptionChart.destroy();
+        }
+        if($scope.currentSpeedChart){
+            $scope.currentSpeedChart.destroy();
+        }
+
+        //Turn off interval if it's active
+        if(angular.isDefined($scope.currentSpeedInterval)){
+            $interval.cancel($scope.currentSpeedInterval);
+            $scope.currentSpeedInterval = undefined;
+        }
+
+        if($scope.selectedVehicle == 0){
+            this.initCharts($scope);
+        }else{
+            individualCharts($scope);
+        }
+    }
+
     var remainingFuelChart = function($scope){
         var url = "http://35.193.191.2:8080/vehicle/";
         $.get(url, function(data, status){
@@ -183,35 +215,6 @@ angular.module('ChartService',[])
         }
         getCurrentSpeed();
         $scope.currentSpeedInterval = $interval(getCurrentSpeed, 500);
-    }
-
-    this.updateCharts = function($scope) {
-        //Clear out old charts
-        if($scope.leftChart){
-            $scope.leftChart.destroy();
-        }
-        if($scope.rightChart){
-            $scope.rightChart.destroy();
-        }
-
-        //Turn off interval if it's active
-        if(angular.isDefined($scope.currentSpeedInterval)){
-            $interval.cancel($scope.currentSpeedInterval);
-            $scope.currentSpeedInterval = undefined;
-        }
-
-        if($scope.selectedVehicle == 0){
-            ChartService.initCharts($scope);
-        }else{
-            individualCharts($scope);
-        }
-    }
-
-    var individualCharts = function($scope) {
-        var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
-        if(vehicleCharts.indexOf("Current Speed") > -1){
-            currentSpeedChart($scope);
-        }
     }
 
     var getFormattedTime = function() {
