@@ -37,8 +37,7 @@
 			<h2>Delete Vehicle(s)</h2>
 			<table>
 	            <tr ng-repeat="x in vehicleIDs">
-	              <td>{{x}}</td>
-			  	  <td><button ng-click="delete(x)">Delete</button></td>
+			  	  <td><button class="btn btn-default" ng-click="delete(x)">Delete Vehicle {{x}}</button></td>
 	            </tr>
 	        </table>
 		</div>

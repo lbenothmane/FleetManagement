@@ -1,4 +1,4 @@
-function editFleetCtrl($scope, NavbarService, SessionService){
+function editFleetCtrl($scope, $interval, NavbarService, SessionService){
     NavbarService.initializeNavbar($scope);
     // $scope.username = SessionService.getCurrentUser();
     $scope.username = "kwberner"; // TODO: Comment out for demo
@@ -9,16 +9,18 @@ function editFleetCtrl($scope, NavbarService, SessionService){
     $scope.getVehicleIDs = function(){
         var url = "http://35.193.191.2:8080/manager/" + $scope.username;
         $.get(url, function(data, status){
+            $scope.vehicleIDs = [];
             for(i = 0; i < data.length; i++){
                 if(data[i].uid != null){
                     $scope.vehicleIDs.push(data[i].uid);
                 }
             }
-            console.log($scope.vehicleIDs);
         });
     }
 
-    $scope.getVehicleIDs();
+    $interval(function(){
+        $scope.getVehicleIDs();
+    }, 500);
 
     $scope.delete = function(vehicleID){
         alert("Delete" + vehicleID);
