@@ -20,15 +20,17 @@
 					<h1>{{username}}'s Fleet</h1>
 					<div id="map" ng-model="myMap"></div>
 	                <br>
-	                <select ng-model="selectedVehicle" ng-change="zoom();updateCharts();">
+	                <select ng-model="selectedVehicle" ng-change="zoom();updateCharts();updatePathMap();">
 	                    <option value="0">View All</option>
 	                    <option ng-repeat="x in vehicleIDs" value="{{x}}">Vehicle {{x}}</option>
 	                </select>
 	                <br><br>
 	                <button ng-click="refresh()">Refresh Map</button>
+					<div id="path_times" ng-show="showPathTimes"><br><button class="btn btn-default" ng-click="generatePathMap()">Select start and end times</button></div>
+					<div id="path_map" ng-model="myPathMap" ng-show="showPathMap"></div>
 				</div>
 			</div>
-		
+
 
 			<hr>
 			<div class="row">

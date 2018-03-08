@@ -14,6 +14,40 @@ angular.module('MapService',[])
          });
      };
 
+     this.createPathMap = function ($scope) {
+        var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
+        $.get(url, function(data, status){
+            var centerCoords = {lat: data.mrLat, lng: data.mrLong};
+            var path_map = new google.maps.Map(document.getElementById('path_map'), {
+              zoom: 5,
+              // center: centerCoords
+              center: {lat: 21.291, lng: -157.821}
+            });
+            $scope.path_map = path_map;
+            plotPath($scope);
+        });
+    };
+
+    var plotPath = function($scope) {
+        //NEED THIS FROM SERVER
+        var routeCoordinates = [
+            {lat: 37.772, lng: -122.214},
+            {lat: 21.291, lng: -157.821},
+            {lat: -18.142, lng: 178.431},
+            {lat: -27.467, lng: 153.027}
+        ];
+
+        var vehicleRoute = new google.maps.Polyline({
+            path: routeCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+      vehicleRoute.setMap($scope.path_map);
+    }
+
      var plotMarkers = function($scope){
          $scope.markers = [];
          for(i = 0; i<$scope.vehicleIDs.length; i++){

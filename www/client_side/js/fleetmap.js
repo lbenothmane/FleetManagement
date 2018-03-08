@@ -10,6 +10,8 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
     $scope.username = "kwberner"; // Comment out for demo
     NavbarService.initializeNavbar($scope);
     $scope.selectedVehicle = "0";
+    $scope.showPathTimes = false;
+    $scope.showPathMap = false;
 
     $scope.speedArray = [];
     $scope.labelArray = [];
@@ -29,7 +31,7 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
                 }
             }
             MapService.createMap($scope);
-            ChartService.initCharts($scope);
+            // ChartService.initCharts($scope);
         });
     }
 
@@ -42,6 +44,18 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
 
     $scope.updateCharts = function(){
         ChartService.updateCharts($scope);
+    }
+
+    $scope.updatePathMap = function(){
+        $scope.showPathMap = false;
+        if($scope.selectedVehicle != 0){
+            $scope.showPathTimes = true;
+        }
+    }
+
+    $scope.generatePathMap = function(){
+        MapService.createPathMap($scope);
+        $scope.showPathMap = true;
     }
 
     $scope.zoom = function(){
