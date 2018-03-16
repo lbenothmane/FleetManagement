@@ -6,20 +6,33 @@ angular.module('ChartService',[])
         // $scope.vehicleIDs
         // var url = "http://35.193.191.2:8080/vehicle/" + $scope.username;
 
-        var fleetCharts = JSON.parse(localStorage.getItem("fleetCharts"));
-        if(fleetCharts.indexOf("Remaining Fuel") > -1){
-            remainingFuelChart($scope);
+        //var fleetCharts = JSON.parse(localStorage.getItem("fleetCharts"));
+        var url = "http://35.193.191.2:8080/fleetCharts/" + $scope.username;
+        $.get(url, function(data, status){
+            var fleetCharts = JSON.parse(data);
+            $scope.fleetSelection = JSON.parse(data);
+            if(fleetCharts.indexOf("Remaining Fuel") > -1){
+                remainingFuelChart($scope);
+            }
+            if(fleetCharts.indexOf("Gas Consumption") > -1){
+                gasConsumptionChart($scope);
+            }
         }
-        if(fleetCharts.indexOf("Gas Consumption") > -1){
-            gasConsumptionChart($scope);
-        }
-
+        
     };
 
     var individualCharts = function($scope) {
-        var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
-        if(vehicleCharts.indexOf("Current Speed") > -1){
-            currentSpeedChart($scope);
+        // var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
+        // if(vehicleCharts.indexOf("Current Speed") > -1){
+        //     currentSpeedChart($scope);
+        // }
+        var url = "http://35.193.191.2:8080/vehicleCharts/" + $scope.username;
+        $.get(url, function(data, status){
+            var vehicleCharts = JSON.parse(data);
+            $scope.vehicleSelection = JSON.parse(data);
+            if(vehicleCharts.indexOf("Current Speed") > -1){
+                currentSpeedChart($scope);
+            }
         }
     }
 

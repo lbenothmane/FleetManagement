@@ -20,6 +20,7 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
 
     //Functions
     function initialize() {
+        $scope.username = SessionService.getCurrentUser();
         var url = "http://35.193.191.2:8080/manager/" + $scope.username;
         $.get(url, function(data, status){
             $scope.vehicleIDs = [];
