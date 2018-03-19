@@ -5,8 +5,6 @@ import os
 import config
 from threading import Thread
 
-BITRATE=500000
-
 ID_FIRST_BYTE = 0x02
 ID_SECOND_BYTE = 0x01
 
@@ -17,7 +15,7 @@ PID_REQUEST = 0x7DF
 PID_RESPONSE = 0x7E8
 
 class CANHandler(Thread):
-	def __init__(self):
+	def __init__(self, bitrate):
 		super(CANHandler, self).__init__()
 		os.system("sudo /sbin/ip link set can0 up type can bitrate " + str(BITRATE))
 		time.sleep(0.1)
