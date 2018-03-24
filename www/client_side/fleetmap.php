@@ -8,6 +8,9 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="Chart.js-master/dist/Chart.bundle.js"></script>
 	<script type="text/javascript" src="Chart.js-master/samples/utils.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment-with-locales.js"></script>
+	<script src="//cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.min.js"></script>
+	<link href="//cdn.rawgit.com/indrimuska/angular-moment-picker/master/dist/angular-moment-picker.min.css" rel="stylesheet">
 	<head>
 		<title>My Fleet</title>
 		<meta charset="utf-8">
@@ -26,7 +29,29 @@
 	                </select>
 	                <br><br>
 	                <button ng-click="refresh()">Refresh Map</button>
-					<div id="path_times" ng-show="showPathTimes"><br><button class="btn btn-default" ng-click="generatePathMap()">Select start and end times</button></div>
+					<div class="input-group"
+					     moment-picker="ctrl.datepicker"
+					     format="YYYY-MM-DD">
+					    <span class="input-group-addon">
+					        <i class="octicon octicon-calendar"></i>
+					    </span>
+					    <input class="form-control"
+					           placeholder="Select a date"
+					           ng-model="ctrl.datepicker"
+					           ng-model-options="{ updateOn: 'blur' }">
+					</div>
+					<div class="input-group"
+					     moment-picker="ctrl.timepicker"
+					     format="HH:mm:ss">
+					    <span class="input-group-addon">
+					        <i class="octicon octicon-clock"></i>
+					    </span>
+					    <input class="form-control"
+					           placeholder="Select a time"
+					           ng-model="ctrl.timepicker"
+					           ng-model-options="{ updateOn: 'blur' }">
+					</div>
+					<div id="path_times" ng-show="showPathTimes"><br><button class="btn btn-default" ng-click="generatePathMap()">Show Path</button></div>
 					<div id="path_map" ng-model="myPathMap" ng-show="showPathMap"></div>
 				</div>
 			</div>

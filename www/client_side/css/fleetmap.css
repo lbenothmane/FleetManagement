@@ -4,6 +4,8 @@
 }
 
 #path_map {
-	width: 50%;
+	margin-left: auto;
+    margin-right: auto;
+	width: 75%;
 	height: 400px;
 }

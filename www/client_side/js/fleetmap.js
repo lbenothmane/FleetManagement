@@ -65,5 +65,5 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
 }//End controller
 
 angular
-  .module('myApp', ['NavbarService', 'MapService', 'ChartService', 'SessionService'])
+  .module('myApp', ['NavbarService', 'MapService', 'ChartService', 'SessionService', 'moment-picker'])
   .controller('myCtrl', myCtrl);
