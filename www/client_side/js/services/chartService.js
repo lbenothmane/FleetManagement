@@ -17,7 +17,7 @@ angular.module('ChartService',[])
             if(fleetCharts.indexOf("Gas Consumption") > -1){
                 gasConsumptionChart($scope);
             }
-        }
+        });
         
     };
 
@@ -33,7 +33,7 @@ angular.module('ChartService',[])
             if(vehicleCharts.indexOf("Current Speed") > -1){
                 currentSpeedChart($scope);
             }
-        }
+        });
     }
 
     this.updateCharts = function($scope) {
