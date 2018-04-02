@@ -16,16 +16,20 @@ angular.module('MapService',[])
 
      var plotMarkers = function($scope){
          $scope.markers = [];
-         for(i = 0; i<$scope.vehicleIDs.length; i++){
+         $scope.vehicleData = [];
+         for(i = 0; i < $scope.vehicleIDs.length; i++){
              var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[i];
              $.get(url, function(data, status){
                  if (data == null){
                      return;
                  }
-                 var coords = {lat: data.mrLat, lng: data.mrLong};
+                $scope.vehicleData.push(data);
+                console.log($scope.vehicleData);
+                 console.log($scope.vehicleData[i]); // TODO: i has been incremented before getting to this line
+                 var coords = {lat: dat.mrLat, lng: dat.mrLong};
                  var marker = new google.maps.Marker({
                    position: coords,
-                   label: ""+data.uid,
+                   label: ""+dat.uid,
                    map: $scope.map
                  });
                  $scope.markers.push(marker);

@@ -33,6 +33,19 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
         });
     }
 
+    function collectVehicleData(){ // Called whenever newest data is needed after intialization
+        $scope.vehicleData = [];
+        for(var i = 0; i < $scope.vehicleIDs.length; i++){
+            var url2 = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[i];
+            $.get(url2, function(data, status){
+                if (data == null){
+                    return;
+                }
+                $scope.vehicleData[i] = data;
+            });
+        }
+    }
+
     $scope.refresh = function(){
         MapService.updateMarkers($scope);
     }
