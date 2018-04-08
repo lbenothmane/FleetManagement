@@ -195,8 +195,10 @@ angular.module('ChartService',[])
         $scope.currentSpeedChart = new Chart(context, config);
 
         var getCurrentSpeed = function(){
-            var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
-            $.get(url, function(data, status){
+            var id = Number($scope.selectedVehicle);
+            var data = $scope.vehicleData.get(id);
+            // var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
+            // $.get(url, function(data, status){
                 // console.log("Live mrSpeed: " + data.mrSpeed);
                 var fakeSpeed = Math.ceil(55 + Math.random() * 10);
                 var speed = data.mrSpeed;
@@ -211,7 +213,7 @@ angular.module('ChartService',[])
                 //  dataset.data = $scope.speedArray;
                 // });
                 $scope.currentSpeedChart.update();
-            });
+            // });
         }
         getCurrentSpeed();
         $scope.currentSpeedInterval = $interval(getCurrentSpeed, 500);
