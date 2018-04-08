@@ -21,6 +21,9 @@ angular.module('ChartService',[])
         if(vehicleCharts.indexOf("Current Speed") > -1){
             currentSpeedChart($scope);
         }
+        if(vehicleCharts.indexOf("Engine Temperature") > -1){
+            engineTemperatureChart($scope);
+        }
     }
 
     this.updateCharts = function($scope) {
@@ -33,6 +36,9 @@ angular.module('ChartService',[])
         }
         if($scope.currentSpeedChart){
             $scope.currentSpeedChart.destroy();
+        }
+        if($scope.engineTemperatureChart){
+            $scope.engineTemperatureChart.destroy();
         }
 
         //Turn off interval if it's active
@@ -217,6 +223,59 @@ angular.module('ChartService',[])
         }
         getCurrentSpeed();
         $scope.currentSpeedInterval = $interval(getCurrentSpeed, 500);
+    }
+
+    var engineTemperatureChart = function($scope){
+        var engineTemperature = 50;
+        var engineTemperatureMaxThreshold = 65;
+        // var engineTemperature = $scope.vehicleData.get(Number($scope.selectedVehicle)).engineTemperature;
+
+        var context = document.getElementById("engineTemperatureCanvas");
+        var chartData = {
+            labels: ['placeholder'],
+            datasets: [{
+                label: 'Engine Temperature',
+                data: [engineTemperature],
+                backgroundColor: 'green',
+                borderColor: 'black',
+                borderWidth: 1
+            },{
+                label: 'Engine Temperature Max Threshold',
+                data: [engineTemperatureMaxThreshold - engineTemperature],
+                backgroundColor: 'red',
+                borderColor: 'black',
+                borderWidth: 1
+            }]
+        };
+
+        var config = {
+            type: 'bar',
+            data: chartData,
+            options: {
+                title:{
+                    display:true,
+                    text:'Engine Temperature'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Temperature (degrees Fahrenheit)'
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true
+                    }]
+                }
+            }
+        };
+
+        $scope.engineTemperatureChart = new Chart(context, config);
     }
 
     var getFormattedTime = function() {

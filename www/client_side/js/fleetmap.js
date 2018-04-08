@@ -47,6 +47,7 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
 
     $scope.refresh = function(){
         MapService.updateMarkers($scope);
+        collectVehicleData();
     }
     $interval(function(){
         $scope.refresh();
