@@ -3,7 +3,7 @@ angular.module('MapService',[])
 
      this.createMap = function ($scope) {
          var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[0];
-         $.get(url, function(data, status){
+         $.get(url, function(data, status){ // GET to set center of map
              var centerCoords = {lat: data.mrLat, lng: data.mrLong};
              var map = new google.maps.Map(document.getElementById('map'), {
                zoom: 8,
@@ -15,67 +15,58 @@ angular.module('MapService',[])
      };
 
      var plotMarkers = function($scope){
-         $scope.markers = [];
-         $scope.vehicleData = [];
+         $scope.markers = new Map();
+         $scope.vehicleData = new Map();
          for(i = 0; i < $scope.vehicleIDs.length; i++){
              var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[i];
-             $.get(url, function(data, status){
+             $.get(url, function(data, status){ // GET to initialize map markers
                  if (data == null){
                      return;
                  }
-                $scope.vehicleData.push(data);
-                console.log($scope.vehicleData);
-                 console.log($scope.vehicleData[i]); // TODO: i has been incremented before getting to this line
-                 var coords = {lat: dat.mrLat, lng: dat.mrLong};
+                 $scope.vehicleData.set(data.uid, data);
+                 var coords = {lat: data.mrLat, lng: data.mrLong};
                  var marker = new google.maps.Marker({
                    position: coords,
-                   label: ""+dat.uid,
+                   label: ""+data.uid,
                    map: $scope.map
                  });
-                 $scope.markers.push(marker);
+                 $scope.markers.set(data.uid, marker);
              });
          }
      }
 
       this.updateMarkers = function ($scope) {
          var i;
-         if($scope.vehicleIDs != undefined){
+         if($scope.vehicleIDs != undefined && $scope.vehicleData != undefined){
              for(i = 0; i < $scope.vehicleIDs.length; i++){
-                 requestCoordsAndPlaceMarker($scope, i);
+                 placeMarker($scope, $scope.vehicleIDs[i]);
              }
          }
      }
 
-     var requestCoordsAndPlaceMarker = function($scope, index){
-         var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[index];
-         $.get(url, function(data, status){
-             if(data == null){
-                 return;
-             }
-             var coords = {lat: data.mrLat, lng: data.mrLong};
-             // if ($scope.markers[index] == null)
-             //     console.log($scope.markers)
-             if($scope.markers != undefined && $scope.markers[index] != undefined){
-                 $scope.markers[index].setPosition(coords);
-             }
-         });
+     var placeMarker = function($scope, index){
+         var data = $scope.vehicleData.get(index);
+         if(data == null){
+             return;
+         }
+         var coords = {lat: data.mrLat, lng: data.mrLong};
+         if($scope.markers != undefined && $scope.markers.get(index) != undefined){
+             $scope.markers.get(index).setPosition(coords);
+         }
      }
 
      this.zoom = function($scope) {
-         if($scope.selectedVehicle == 0){ //View all
-             var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[0];
-             $.get(url, function(data, status){
-                 var coords = {lat: data.mrLat, lng: data.mrLong};
-                 $scope.map.setCenter(coords);
-                 $scope.map.setZoom(8);
-             });
+         if($scope.selectedVehicle == 0 && $scope.vehicleData != undefined){ //View all
+             var data = $scope.vehicleData.get($scope.vehicleIDs[0]);
+             var coords = {lat: data.mrLat, lng: data.mrLong};
+             $scope.map.setCenter(coords);
+             $scope.map.setZoom(8);
          }else{
-             var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
-             $.get(url, function(data, status){
-                 var coords = {lat: data.mrLat, lng: data.mrLong};
-                 $scope.map.setCenter(coords);
-                 $scope.map.setZoom(15);
-             });
+             var id = Number($scope.selectedVehicle);
+             var data = $scope.vehicleData.get(id);
+             var coords = {lat: data.mrLat, lng: data.mrLong};
+             $scope.map.setCenter(coords);
+             $scope.map.setZoom(15);
          }
      }
  });
