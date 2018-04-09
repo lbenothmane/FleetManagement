@@ -229,6 +229,7 @@ angular.module('ChartService',[])
         var engineTemperature = 50;
         var engineTemperatureMaxThreshold = 65;
         // var engineTemperature = $scope.vehicleData.get(Number($scope.selectedVehicle)).engineTemperature;
+        // var engineTemperatureMaxThreshold = $scope.vehicleData.get(Number($scope.selectedVehicle)).engineTemperatureMaxThreshold;
 
         var context = document.getElementById("engineTemperatureCanvas");
         var chartData = {
