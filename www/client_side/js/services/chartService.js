@@ -21,6 +21,9 @@ angular.module('ChartService',[])
         if(vehicleCharts.indexOf("Current Speed") > -1){
             currentSpeedChart($scope);
         }
+        if(vehicleCharts.indexOf("Engine Temperature") > -1){
+            engineTemperatureChart($scope);
+        }
     }
 
     this.updateCharts = function($scope) {
@@ -33,6 +36,9 @@ angular.module('ChartService',[])
         }
         if($scope.currentSpeedChart){
             $scope.currentSpeedChart.destroy();
+        }
+        if($scope.engineTemperatureChart){
+            $scope.engineTemperatureChart.destroy();
         }
 
         //Turn off interval if it's active
@@ -84,7 +90,9 @@ angular.module('ChartService',[])
                     },
                     scales: {
                         xAxes: [{
-                            display: true
+                            display: true,
+                            categorySpacing: 0,
+                            barPercentage: 0.35
                         }],
                         yAxes: [{
                             scaleLabel: {
@@ -195,8 +203,10 @@ angular.module('ChartService',[])
         $scope.currentSpeedChart = new Chart(context, config);
 
         var getCurrentSpeed = function(){
-            var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
-            $.get(url, function(data, status){
+            var id = Number($scope.selectedVehicle);
+            var data = $scope.vehicleData.get(id);
+            // var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
+            // $.get(url, function(data, status){
                 // console.log("Live mrSpeed: " + data.mrSpeed);
                 var fakeSpeed = Math.ceil(55 + Math.random() * 10);
                 var speed = data.mrSpeed;
@@ -211,10 +221,66 @@ angular.module('ChartService',[])
                 //  dataset.data = $scope.speedArray;
                 // });
                 $scope.currentSpeedChart.update();
-            });
+            // });
         }
         getCurrentSpeed();
         $scope.currentSpeedInterval = $interval(getCurrentSpeed, 500);
+    }
+
+    var engineTemperatureChart = function($scope){
+        var engineTemperature = 50;
+        var engineTemperatureMaxThreshold = 65;
+        // var engineTemperature = $scope.vehicleData.get(Number($scope.selectedVehicle)).engineTemperature;
+        // var engineTemperatureMaxThreshold = $scope.vehicleData.get(Number($scope.selectedVehicle)).engineTemperatureMaxThreshold;
+
+        var context = document.getElementById("engineTemperatureCanvas");
+        var chartData = {
+            labels: ['placeholder'],
+            datasets: [{
+                label: 'Engine Temperature',
+                data: [engineTemperature],
+                backgroundColor: 'green',
+                borderColor: 'black',
+                borderWidth: 1
+            },{
+                label: 'Engine Temperature Max Threshold',
+                data: [engineTemperatureMaxThreshold - engineTemperature],
+                backgroundColor: 'red',
+                borderColor: 'black',
+                borderWidth: 1
+            }]
+        };
+
+        var config = {
+            type: 'bar',
+            data: chartData,
+            options: {
+                title:{
+                    display:true,
+                    text:'Engine Temperature'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        stacked: true,
+                        categorySpacing: 0,
+                        barPercentage: 0.35
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Temperature (degrees Fahrenheit)'
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true
+                    }]
+                }
+            }
+        };
+
+        $scope.engineTemperatureChart = new Chart(context, config);
     }
 
     var getFormattedTime = function() {

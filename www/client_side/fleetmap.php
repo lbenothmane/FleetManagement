@@ -48,6 +48,9 @@
 				<div class="col-md-6" ng-show="currentSpeedChart">
 					<canvas id="currentSpeedCanvas"></canvas>
 				</div>
+				<div class="col-md-6" ng-show="engineTemperatureChart">
+					<canvas id="engineTemperatureCanvas"></canvas>
+				</div>
 			</div>
 		</div>
 
