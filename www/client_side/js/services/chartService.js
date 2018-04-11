@@ -90,7 +90,9 @@ angular.module('ChartService',[])
                     },
                     scales: {
                         xAxes: [{
-                            display: true
+                            display: true,
+                            categorySpacing: 0,
+                            barPercentage: 0.35
                         }],
                         yAxes: [{
                             scaleLabel: {
@@ -260,7 +262,9 @@ angular.module('ChartService',[])
                 scales: {
                     xAxes: [{
                         display: true,
-                        stacked: true
+                        stacked: true,
+                        categorySpacing: 0,
+                        barPercentage: 0.35
                     }],
                     yAxes: [{
                         scaleLabel: {
