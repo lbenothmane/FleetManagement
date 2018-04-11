@@ -7,7 +7,7 @@ default_mode = "test"
 class ConfigStore:
     class __Singleton:
         def __init__(self):
-
+            pass
     instance = None
 
     def __init__(self):

@@ -59,8 +59,12 @@ class CANHandler(Thread):
                 pass
             message = self.q.get()
             pid = message.data[2]
-            # TODO Change this and server to support 4-number data arrays instead of just one number
             if ConfigStore.log_all() or pid in ConfigStore().get_pids()
                 data = message.data[3]
                 api_engine.pid_send(pid, data)
                 time.sleep(.1)
+
+def __main__(args):
+    if hasattr(args, "sim"):
+
+    elif hasattr(args, "file"):
