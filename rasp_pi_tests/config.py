@@ -48,6 +48,12 @@ class ConfigStore:
             return default_server['uri']
 
     def set_vehicle(self, vehicle):
+        if hasattr(vehicle, 'pids'):
+            pids = []
+            for pid in vehicle.pids:
+                if pid not in pids:
+                    pids.append(pid)
+            vehicle.pids = pids
         self.instance.vehicle = vehicle
 
     def set_server(self, server):
