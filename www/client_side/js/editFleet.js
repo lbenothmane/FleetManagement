@@ -1,10 +1,8 @@
-function editFleetCtrl($scope, $interval, NavbarService, SessionService){
+function editFleetCtrl($scope, $http, $interval, NavbarService, SessionService){
     NavbarService.initializeNavbar($scope);
     // $scope.username = SessionService.getCurrentUser();
     $scope.username = "kwberner"; // TODO: Comment out for demo
     $scope.vehicleIDs = [];
-
-    // $scope.$apply($scope.getVehicleIDs);
 
     $scope.getVehicleIDs = function(){
         var url = "http://35.193.191.2:8080/manager/" + $scope.username;
@@ -23,7 +21,26 @@ function editFleetCtrl($scope, $interval, NavbarService, SessionService){
     }, 500);
 
     $scope.delete = function(vehicleID){
-        alert("Delete" + vehicleID);
+        var url = "http://35.193.191.2:8080/vehicle/" + vehicleID;
+        $http({
+            method: 'DELETE',
+            url: url,
+            headers: {
+                'Content-type': 'application/json;charset=utf-8'
+            }
+        })
+        .then(function(response) {
+            alert("Deleted " + vehicleID);
+        });
+    }
+
+    $scope.add = function(){
+        var url = "http://35.193.191.2:8080/vehicle/";
+        $.post(url, { uid: $scope.addID}, function(data, status){
+            console.log(data);
+            console.log(status);
+            alert("Added " + $scope.addID);
+        });
     }
 }
 
