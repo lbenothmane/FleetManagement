@@ -52,12 +52,3 @@ class ConfigStore:
 
     def set_server(self, server):
         self.instance.server = server
-
-    def set_mode(self, mode):
-        self.instance.mode = mode
-
-    def log_all(self):
-        if self.instance.mode = "test"
-            return True
-        else:
-            return False

@@ -1,33 +1,26 @@
 import gps
 import time
-import api_engine
+from api_engine import API_Engine
 from threading import Thread
 
 class GPSHandler(Thread):
     def __init__(self):
         super(GPSHandler, self).__init__()
-        self.lat = 0.0
-        self.lon = 0.0
+		self.api_engine = API_Engine()
 
     def startup(self):
-        session = gps.GPS("localhost", "2947")
-        session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
+        self.session = gps.GPS("localhost", "2947")
+        self.session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
         return True
-
-    def call_api(self):
-        while True:
-            api_engine.send_pos(self.lat, self.lon)
-            time.sleep(5)
-
+		
     def run(self):
         while True:
             try:
                 time.sleep(1)
+				report = self.session.next()
                 if report['class'] == 'TPV':
-                    if hasattr(report, 'lat'):
-                        self.lat = report.lat
-                    if hasattr(report, 'lon'):
-                        self.lon = report.lon
+                    if hasattr(report, 'lat') and hasattr(report, 'lon'):
+						self.api_engine.send_pos(report.lat, report.lon)
             except KeyError:
                 pass
             except KeyboardInterrupt:
@@ -35,3 +28,17 @@ class GPSHandler(Thread):
                 quit()
             except StopIteration:
                 quit()
+
+def main():
+	gps = GPSHandler()
+	gps.api_engine.set_logging(True)
+	gps.api_engine.set_send(False)
+	if gps.startup():
+		while True:
+			report = gps.session.next()
+			if report['class'] == 'TPV':
+				print(report)
+				time.sleep(.1)
+
+if __name__ == "__main__":
+	main()

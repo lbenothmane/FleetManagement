@@ -3,7 +3,7 @@ import queue
 import time
 import os
 import config
-import api_engine
+from api_engine import API_Engine
 from threading import Thread
 
 ID_FIRST_BYTE = 0x02
@@ -19,6 +19,7 @@ def get_request_message(self, pid):
 class CANHandler(Thread):
     def __init__(self, bitrate, pids):
         super(CANHandler, self).__init__()
+		self.api_engine = API_Engine()
 
     def startup(self):
         os.system("sudo /sbin/ip link set can0 up type can bitrate " + str(config.BITRATE))
@@ -59,12 +60,20 @@ class CANHandler(Thread):
                 pass
             message = self.q.get()
             pid = message.data[2]
-            if ConfigStore.log_all() or pid in ConfigStore().get_pids()
+            if pid in ConfigStore().get_pids()
                 data = message.data[3]
-                api_engine.pid_send(pid, data)
+                self.api_engine.pid_send(pid, data)
                 time.sleep(.1)
 
-def __main__(args):
-    if hasattr(args, "sim"):
+def main():
+    can = CANHandler(ConfigStore().get_bitrate(), ConfigStore().get_pids())
+	can.api_engine.set_logging(True)
+	can.api_engine.set_send(False)
+	can.startup()
+	try:
+		can.start()
+	except Exception:
+		can.shutdown()
 
-    elif hasattr(args, "file"):
+if __name__ == "__main__":
+	main()
