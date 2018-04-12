@@ -2,8 +2,15 @@ angular.module('MapService',[])
  .service('MapService',function(){
 
      this.createMap = function ($scope) {
+         if($scope.vehicleIDs == null){
+             return;
+         }
          var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[0];
          $.get(url, function(data, status){ // GET to set center of map
+             if(data == null){
+                 console.log("Vehicle " + $scope.vehicleIDs[0] + " has no data.");
+                 return;
+             }
              var centerCoords = {lat: data.mrLat, lng: data.mrLong};
              var map = new google.maps.Map(document.getElementById('map'), {
                zoom: 8,

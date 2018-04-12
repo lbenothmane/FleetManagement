@@ -24,8 +24,8 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
         $.get(url, function(data, status){
             $scope.vehicleIDs = [];
             for(i = 0; i < data.length; i++){
-                if(data[i].uid != null){
-                    $scope.vehicleIDs.push(data[i].uid);
+                if(data[i].vid != null){
+                    $scope.vehicleIDs.push(data[i].vid);
                 }
             }
             MapService.createMap($scope);
@@ -34,13 +34,20 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
     }
 
     function collectVehicleData(){ // Called whenever newest data is needed after intialization
+        if($scope.vehicleIDs == null){
+            return;
+        }
         for(i = 0; i < $scope.vehicleIDs.length; i++){
             var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[i];
             $.get(url, function(data, status){
                 if (data == null){
                     return;
                 }
-                $scope.vehicleData.set(data.uid, data);
+                if($scope.vehicleData == null){
+                    console.log("Error: Vehicle has no data");
+                    return;
+                }
+                $scope.vehicleData.set(data.vid, data);
             });
         }
     }

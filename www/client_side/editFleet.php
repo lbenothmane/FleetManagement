@@ -20,6 +20,12 @@
 					<div class="col-sm-2">
 						<input type="text" class="form-control" ng-model="addID" placeholder="Vehicle ID">
 					</div>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" ng-model="addBitrate" placeholder="Bitrate">
+					</div>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" ng-model="addGasTankSize" placeholder="Gas Tank Size">
+					</div>
 				</div>
 				<!-- <div class="form-group">
 					<label class="control-label col-sm-2" for="pwd">Driver:</label>

@@ -1,7 +1,6 @@
 function editFleetCtrl($scope, $http, $interval, NavbarService, SessionService){
     NavbarService.initializeNavbar($scope);
-    // $scope.username = SessionService.getCurrentUser();
-    $scope.username = "kwberner"; // TODO: Comment out for demo
+    $scope.username = SessionService.getCurrentUser();
     $scope.vehicleIDs = [];
 
     $scope.getVehicleIDs = function(){
@@ -9,8 +8,8 @@ function editFleetCtrl($scope, $http, $interval, NavbarService, SessionService){
         $.get(url, function(data, status){
             $scope.vehicleIDs = [];
             for(i = 0; i < data.length; i++){
-                if(data[i].uid != null){
-                    $scope.vehicleIDs.push(data[i].uid);
+                if(data[i].vid != null){
+                    $scope.vehicleIDs.push(data[i].vid);
                 }
             }
         });
@@ -21,26 +20,24 @@ function editFleetCtrl($scope, $http, $interval, NavbarService, SessionService){
     }, 500);
 
     $scope.delete = function(vehicleID){
-        var url = "http://35.193.191.2:8080/vehicle/" + vehicleID;
-        $http({
-            method: 'DELETE',
-            url: url,
-            headers: {
-                'Content-type': 'application/json;charset=utf-8'
-            }
-        })
-        .then(function(response) {
-            alert("Deleted " + vehicleID);
-        });
+        var url = "http://35.193.191.2:8080/vehicle/" + vehicleID; //TODO
+        $.ajax({
+            type: 'DELETE',
+            url: url
+        }).done(function() {
+             alert("Deleted " + vehicleID);
+            });
     }
 
     $scope.add = function(){
-        var url = "http://35.193.191.2:8080/vehicle/";
-        $.post(url, { uid: $scope.addID}, function(data, status){
-            console.log(data);
-            console.log(status);
-            alert("Added " + $scope.addID);
-        });
+        var url = "http://35.193.191.2:8080/manager/" + $scope.username;
+        $.ajax({
+            type: 'PUT',
+            url: url,
+            data: { vid: $scope.addID, bitrate: $scope.addBitrate, gasTankSize: $scope.addGasTankSize }
+        }).done(function() {
+             alert("Added " + $scope.addID);
+            });
     }
 }
 
