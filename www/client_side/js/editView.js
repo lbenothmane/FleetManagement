@@ -3,7 +3,7 @@ function editViewCtrl($scope, NavbarService, SessionService){
 
     $scope.fleetOptions = ['Remaining Fuel', 'Gas Consumption'];
     //$scope.fleetSelection = JSON.parse(localStorage.getItem("fleetCharts"));
-    var url = "http://35.193.191.2:8080/manager/chart/" + $scope.username;
+    var url = "http://35.193.191.2:8080/manager/chart/managerusername=" + $scope.username;
     $.get(url, function(data, status){
       console.log(data);
     });
