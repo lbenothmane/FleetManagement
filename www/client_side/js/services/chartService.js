@@ -55,29 +55,39 @@ angular.module('ChartService',[])
     }
 
     var remainingFuelChart = function($scope){
+        // var id = Number($scope.selectedVehicle);
+        // var data = $scope.vehicleData.get(id);
         var url = "http://35.193.191.2:8080/vehicle/";
-        $.get(url, function(data, status){
-            var fuelData = [];
-            var vehicleLabels = [];
-            var vehicleSpeeds = [];
-            for(var i = 0; i < data.length; i++){
-                var currentVehicle = data[i];
-                if($scope.vehicleIDs.indexOf(currentVehicle.uid) != -1){
-                    fuelData.push(currentVehicle.mrGas);
-                    vehicleSpeeds.push(currentVehicle.mrSpeed);
-                    vehicleLabels.push(currentVehicle.uid);
-                }
-            }
+        // $.get(url, function(data, status){
+        //     var fuelData = [];
+        //     var vehicleLabels = [];
+        //     var vehicleSpeeds = [];
+        //     for(var i = 0; i < data.length; i++){
+        //         var currentVehicle = data[i];
+        //         if($scope.vehicleIDs.indexOf(currentVehicle.uid) != -1){
+        //             fuelData.push(currentVehicle.mrGas);
+        //             vehicleSpeeds.push(currentVehicle.mrSpeed);
+        //             vehicleLabels.push(currentVehicle.uid);
+        //         }
+        //     }
             // console.log("FuelData: " + fuelData);
+
+            // var iter = $scope.vehicleData.keys();
+            // while(iter.next()){
+                
+            // }
+            for (var key in $scope.vehicleIDs){
+                console.log("key: " + key + " val: " + $scope.vehicleData.get(key));
+            }
 
             var context = document.getElementById("remainingFuelCanvas");
             var config = {
                 type: 'bar',
                 data: {
-                    labels: vehicleLabels,
+                    labels: $scope.vehicleIDs,
                     datasets: [{
                         label: 'Gas',
-                        data: fuelData,
+                        data: [5],
                         backgroundColor: 'blue',
                         borderColor: 'black',
                         borderWidth: 1
@@ -107,7 +117,7 @@ angular.module('ChartService',[])
                 }
             }
             $scope.remainingFuelChart = new Chart(context, config);
-        });
+        // });
     }
 
     var gasConsumptionChart = function($scope){
