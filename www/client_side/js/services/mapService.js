@@ -13,7 +13,7 @@ angular.module('MapService',[])
              }
              var centerCoords = {lat: data.mrLat, lng: data.mrLong};
              var map = new google.maps.Map(document.getElementById('map'), {
-               zoom: 8,
+               zoom: 10,
                center: centerCoords
              });
              $scope.map = map;
@@ -30,14 +30,14 @@ angular.module('MapService',[])
                  if (data == null){
                      return;
                  }
-                 $scope.vehicleData.set(data.uid, data);
+                 $scope.vehicleData.set(data.vid, data);
                  var coords = {lat: data.mrLat, lng: data.mrLong};
                  var marker = new google.maps.Marker({
                    position: coords,
-                   label: ""+data.uid,
+                   label: ""+data.vid,
                    map: $scope.map
                  });
-                 $scope.markers.set(data.uid, marker);
+                 $scope.markers.set(data.vid, marker);
              });
          }
      }
@@ -67,7 +67,7 @@ angular.module('MapService',[])
              var data = $scope.vehicleData.get($scope.vehicleIDs[0]);
              var coords = {lat: data.mrLat, lng: data.mrLong};
              $scope.map.setCenter(coords);
-             $scope.map.setZoom(8);
+             $scope.map.setZoom(10);
          }else{
              var id = Number($scope.selectedVehicle);
              var data = $scope.vehicleData.get(id);
