@@ -15,6 +15,7 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
     $scope.labelArray = [];
 
     window.onload = function(){
+        $scope.username = "kwberner";
         initialize();
     }
 
