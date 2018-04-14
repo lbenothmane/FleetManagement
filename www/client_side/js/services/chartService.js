@@ -3,6 +3,9 @@ angular.module('ChartService',[])
 
     this.initCharts = function ($scope) {
         var fleetCharts = JSON.parse(localStorage.getItem("fleetCharts"));
+        if(fleetCharts == null){
+            fleetCharts = ['Remaining Fuel', 'Gas Consumption'];
+        }
         if(fleetCharts.indexOf("Remaining Fuel") > -1){
             remainingFuelChart($scope);
         }
@@ -13,6 +16,9 @@ angular.module('ChartService',[])
 
     var individualCharts = function($scope) {
         var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
+        if(vehicleCharts == null){
+            vehicleCharts = ['Current Speed', 'Engine Temperature'];
+        }
         if(vehicleCharts.indexOf("Current Speed") > -1){
             currentSpeedChart($scope);
         }
