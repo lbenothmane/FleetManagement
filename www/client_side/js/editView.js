@@ -2,14 +2,14 @@ function editViewCtrl($scope, NavbarService, SessionService){
     NavbarService.initializeNavbar($scope);
 
     $scope.fleetOptions = ['Remaining Fuel', 'Gas Consumption'];
-    //$scope.fleetSelection = JSON.parse(localStorage.getItem("fleetCharts"));
+    $scope.fleetSelection = JSON.parse(localStorage.getItem("fleetCharts"));
     var url = "http://35.193.191.2:8080/manager/chart/" + SessionService.getCurrentUser();
     $.get(url, function(data, status){
       console.log(data);
     });
 
     $scope.vehicleOptions = ['Current Speed', 'Engine Temperature'];
-    // $scope.vehicleSelection = JSON.parse(localStorage.getItem("vehicleCharts"));
+    $scope.vehicleSelection = JSON.parse(localStorage.getItem("vehicleCharts"));
     if($scope.fleetSelection == null){
       $scope.fleetSelection = [];
     }
@@ -28,7 +28,7 @@ function editViewCtrl($scope, NavbarService, SessionService){
 
        console.log($scope.fleetSelection);
 
-       // localStorage.setItem("fleetCharts", JSON.stringify($scope.fleetSelection));
+       localStorage.setItem("fleetCharts", JSON.stringify($scope.fleetSelection));
     }
 
     $scope.vehicleToggle = function(vehicleOption) {
@@ -42,7 +42,7 @@ function editViewCtrl($scope, NavbarService, SessionService){
 
        console.log($scope.vehicleSelection);
 
-       // localStorage.setItem("vehicleCharts", JSON.stringify($scope.vehicleSelection));
+       localStorage.setItem("vehicleCharts", JSON.stringify($scope.vehicleSelection));
     }
 
     $scope.saveChanges = function() { // TODO: POST updates to settings
