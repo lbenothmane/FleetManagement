@@ -6,7 +6,7 @@ from threading import Thread
 
 class API_Engine(Thread):
     class __Singleton:
-        def __init__():
+        def __init__(self):
             pass
             
     instance = None
@@ -27,10 +27,10 @@ class API_Engine(Thread):
                 for pid in self.instance.pid_data.items():
                     pids.append({"pid":pid[0], "data":pid[1]})
                 pid_body = {'vid': ConfigStore().get_vid(), 'did': ConfigStore().get_did(), 'pids': pids}
-                do_request("put", url=ConfigStore().get_server_uri() + '/vehicle/pid/' + ConfigStore().get_vid(), pid_body)
+                self.do_request("put", url=ConfigStore().get_server_uri() + '/vehicle/pid/' + ConfigStore().get_vid(), body=pid_body)
                 self.instance.pid_data = {}
             if self.instance.pos_data:
-                do_request("put", url=ConfigStore().get_server_uri() + '/vehicle/' + ConfigStore().get_vid(), pid_body)
+                self.do_request("put", url=ConfigStore().get_server_uri() + '/vehicle/' + ConfigStore().get_vid(), body=pid_body)
                 self.instance.pos_data = {}
         
     def set_logging(self, log):
@@ -45,14 +45,14 @@ class API_Engine(Thread):
     def pos_send(self, lat, lon):
         self.instance.pos_data = {"latitude": lat, "longitude": lon}
 
-    def get_vehicle(self)
-        result = do_request("get", url=ConfigStore().get_server_uri() + '/vehicle/init/' + ConfigStore().get_vid())
+    def get_vehicle(self):
+        result = self.do_request("get", url=ConfigStore().get_server_uri() + '/vehicle/init/' + ConfigStore().get_vid())
         return result.json()
         
     def do_request(self, type, url, body = {}):
         response = ""
         if self.instance.log:
-            print(type + " " + url + " " + body)
+            print(type + " " + url + " " + str(body))
         if self.instance.send:
             if type == "put":
                 response = requests.put(url=url, data=body)

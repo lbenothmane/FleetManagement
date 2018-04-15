@@ -31,7 +31,6 @@ class FleetMonitorApp:
             if not self.can.startup():
                 return False
         except:
-            # log_and_warn(
             return False
 
         # Check for GPS connection
@@ -40,10 +39,11 @@ class FleetMonitorApp:
             if not self.gps.setup():
                 return False
         except:
-            # log_and_warn(
             return False
+            
+        API_Engine().start()
 
-    def run(self):
+    def run_hardware(self):
         try:
             self.can.start()
             self.gps.start()
@@ -52,6 +52,14 @@ class FleetMonitorApp:
         except:
             pass
         self.can.shutdown()
+		
+	def run:(self):
+		try:
+			while True:
+				vehicle = API_Engine().get_vehicle()
+				vehicle["did"] = ConfigStore().get_did()
+				ConfigStore().set_vehicle(vehicle)
+				sleep(60)
 
 
 
@@ -79,6 +87,7 @@ def main():
 		vehicle["pids"] = []
 		ConfigStore().set_vehicle(vehicle)
     if app.startup():
+        app.run_hardware()
         app.run()
 
 if __name__ == "__main__":
