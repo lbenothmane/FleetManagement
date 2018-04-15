@@ -5,7 +5,7 @@ from config import ConfigStore
 from threading import Thread
 
 class API_Engine(Thread):
-	class __Singleton:
+    class __Singleton:
         def __init__():
             pass
             
@@ -44,14 +44,10 @@ class API_Engine(Thread):
 
     def pos_send(self, lat, lon):
         self.instance.pos_data = {"latitude": lat, "longitude": lon}
-        
-    def put_driver(self, did):
-        
-    def put_new_vehicle(self):
 
     def get_vehicle(self)
-        result = do_request("get", url=ConfigStore().get_server_uri() + '/vehicle/' + ConfigStore().get_vid())
-        return json.loads(result.json())
+        result = do_request("get", url=ConfigStore().get_server_uri() + '/vehicle/init/' + ConfigStore().get_vid())
+        return result.json()
         
     def do_request(self, type, url, body = {}):
         response = ""
