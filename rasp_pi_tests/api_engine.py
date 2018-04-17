@@ -22,15 +22,16 @@ class API_Engine(Thread):
     def run(self):
         while True:
             time.sleep(5)
-            if self.instance.pid_data:
+            if self.instance.pid_data or self.instance.pos_data:
                 pids = []
                 for pid in self.instance.pid_data.items():
                     pids.append({"pid":pid[0], "data":pid[1]})
-                pid_body = {'vid': ConfigStore().get_vid(), 'did': ConfigStore().get_did(), 'pids': pids}
+                pid_body = {'did': ConfigStore().get_did(), 'pids': pids}
+                if self.instance.pos_data:
+                    pid_body['latititude']  = self.instance.pos_data['latitude']
+                    pid_body['longitude'] = self.instance.pos_data['longitude']
                 self.do_request("put", url=ConfigStore().get_server_uri() + '/vehicle/pid/' + ConfigStore().get_vid(), body=pid_body)
                 self.instance.pid_data = {}
-            if self.instance.pos_data:
-                self.do_request("put", url=ConfigStore().get_server_uri() + '/vehicle/' + ConfigStore().get_vid(), body=pid_body)
                 self.instance.pos_data = {}
         
     def set_logging(self, log):
@@ -55,12 +56,12 @@ class API_Engine(Thread):
             print(type + " " + url + " " + str(body))
         if self.instance.send:
             if type == "put":
-                response = requests.put(url=url, data=body)
+                response = requests.put(url=url, json=body)
             elif type == "post":
-                response = requests.post(url=url, data=body)
+                response = requests.post(url=url, json=body)
             elif type == "delete":
                 if body:
-                    response = requests.delete(url=url, body=body)
+                    response = requests.delete(url=url, json=body)
                 else:
                     response = requests.delete(url=url)
             elif type == "get":

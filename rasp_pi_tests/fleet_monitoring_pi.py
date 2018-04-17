@@ -59,7 +59,7 @@ class FleetMonitorApp:
 				vehicle = API_Engine().get_vehicle()
 				vehicle["did"] = ConfigStore().get_did()
 				ConfigStore().set_vehicle(vehicle)
-				sleep(60)
+				time.sleep(60)
 
 
 
