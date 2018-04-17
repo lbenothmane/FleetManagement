@@ -3,9 +3,16 @@ function editViewCtrl($scope, NavbarService, SessionService){
 
     $scope.fleetOptions = ['Remaining Fuel', 'Gas Consumption'];
     $scope.fleetSelection = JSON.parse(localStorage.getItem("fleetCharts"));
+    var url = "http://35.193.191.2:8080/manager/chart/" + SessionService.getCurrentUser();
+    $.get(url, function(data, status){
+      console.log(data);
+    });
 
     $scope.vehicleOptions = ['Current Speed', 'Engine Temperature'];
     $scope.vehicleSelection = JSON.parse(localStorage.getItem("vehicleCharts"));
+    if($scope.fleetSelection == null){
+      $scope.fleetSelection = [];
+    }
     if($scope.vehicleSelection == null){
       $scope.vehicleSelection = [];
     }
@@ -39,7 +46,35 @@ function editViewCtrl($scope, NavbarService, SessionService){
     }
 
     $scope.saveChanges = function() { // TODO: POST updates to settings
+      var url = "http://35.193.191.2:8080/manager/chart/" + SessionService.getCurrentUser();
+      var jsonString = $scope.buildJSON();
+      console.log(jsonString);
 
+      $.ajax({
+          type: 'PUT',
+          url: url,
+          data: jsonString
+        }).done(function(data) {
+          console.log(data);
+        });
+      
+    }
+
+    $scope.buildJSON = function(){
+      var jsonString = "{";
+      $scope.fleetOptions.forEach(function(element){
+        jsonString += "'name': '" + element + "',";
+        jsonString += "'active': " + (($scope.fleetSelection.indexOf(element) != -1) ? "true" : "false") + ",";;
+      });
+
+      $scope.vehicleOptions.forEach(function(element){
+        jsonString += "'name': '" + element + "',";
+        jsonString += "'active': " + (($scope.vehicleSelection.indexOf(element) != -1) ? "true" : "false") + ",";;
+      });
+      jsonString = jsonString.slice(0,jsonString.length-1);
+      jsonString += "}";
+
+      return jsonString;
     }
 }//End controller
 

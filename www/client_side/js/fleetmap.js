@@ -15,6 +15,7 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
     $scope.labelArray = [];
 
     window.onload = function(){
+        $scope.username = "kwberner";
         initialize();
     }
 
@@ -29,11 +30,13 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
                 }
             }
             MapService.createMap($scope);
-            ChartService.initCharts($scope);
+            // ChartService.initCharts($scope);
+            $scope.collectVehicleDataAndInitializeCharts();
         });
     }
 
-    function collectVehicleData(){ // Called whenever newest data is needed after intialization
+    $scope.collectVehicleData = function(){ // Called whenever newest data is needed after intialization
+        console.log("firing collectVehicleData");
         if($scope.vehicleIDs == null){
             return;
         }
@@ -52,9 +55,32 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
         }
     }
 
+    $scope.collectVehicleDataAndInitializeCharts = function(){ // Called whenever newest data is needed after intialization
+        console.log("firing collectVehicleDataAndInitializeCharts");
+        var promises = [];
+        for(i = 0; i < $scope.vehicleIDs.length; i++){
+            var url = "http://35.193.191.2:8080/vehicle/" + $scope.vehicleIDs[i];
+            promises.push($.get(url, function(data, status){}));
+        }
+        $.when.apply($, promises).then(function(){
+            for (var i = $scope.vehicleIDs.length - 1; i >= 0; i--) {
+                $scope.vehicleData.set(arguments[i][0].vid, arguments[i][0]);
+                // console.log($scope.vehicleIDs);
+                // console.log($scope.vehicleData);
+            }
+            for (i = 0; i < $scope.vehicleIDs.length; i++){
+                var key = $scope.vehicleIDs[i];
+                // console.log("key: " + key + " val: " + $scope.vehicleData.get(key));
+            }
+            ChartService.initCharts($scope);
+        }, function(){
+            //error, ergo - Panic
+        });
+    }
+
     $scope.refresh = function(){
         MapService.updateMarkers($scope);
-        collectVehicleData();
+        $scope.collectVehicleData();
     }
     $interval(function(){
         $scope.refresh();

@@ -2,22 +2,23 @@ angular.module('ChartService',[])
 .service('ChartService',function($interval) {
 
     this.initCharts = function ($scope) {
-        // TODO make this less hacky
-        // $scope.vehicleIDs
-        // var url = "http://35.193.191.2:8080/vehicle/" + $scope.username;
-
         var fleetCharts = JSON.parse(localStorage.getItem("fleetCharts"));
+        if(fleetCharts == null){
+            fleetCharts = ['Remaining Fuel', 'Gas Consumption'];
+        }
         if(fleetCharts.indexOf("Remaining Fuel") > -1){
             remainingFuelChart($scope);
         }
         if(fleetCharts.indexOf("Gas Consumption") > -1){
             gasConsumptionChart($scope);
         }
-
     };
 
     var individualCharts = function($scope) {
         var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
+        if(vehicleCharts == null){
+            vehicleCharts = ['Current Speed', 'Engine Temperature'];
+        }
         if(vehicleCharts.indexOf("Current Speed") > -1){
             currentSpeedChart($scope);
         }
@@ -55,59 +56,50 @@ angular.module('ChartService',[])
     }
 
     var remainingFuelChart = function($scope){
-        var url = "http://35.193.191.2:8080/vehicle/";
-        $.get(url, function(data, status){
-            var fuelData = [];
-            var vehicleLabels = [];
-            var vehicleSpeeds = [];
-            for(var i = 0; i < data.length; i++){
-                var currentVehicle = data[i];
-                if($scope.vehicleIDs.indexOf(currentVehicle.uid) != -1){
-                    fuelData.push(currentVehicle.mrGas);
-                    vehicleSpeeds.push(currentVehicle.mrSpeed);
-                    vehicleLabels.push(currentVehicle.uid);
-                }
-            }
-            // console.log("FuelData: " + fuelData);
+        var gasData = [];
+        for (i = 0; i < $scope.vehicleIDs.length; i++){
+            gasData[i] = $scope.vehicleData.get($scope.vehicleIDs[i]).mrGas;
+        }
 
-            var context = document.getElementById("remainingFuelCanvas");
-            var config = {
-                type: 'bar',
-                data: {
-                    labels: vehicleLabels,
-                    datasets: [{
-                        label: 'Gas',
-                        data: fuelData,
-                        backgroundColor: 'blue',
-                        borderColor: 'black',
-                        borderWidth: 1
-                    }]
+
+        var context = document.getElementById("remainingFuelCanvas");
+        var config = {
+            type: 'bar',
+            data: {
+                labels: $scope.vehicleIDs,
+                datasets: [{
+                    label: 'Gas',
+                    data: gasData,
+                    backgroundColor: 'blue',
+                    borderColor: 'black',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                title:{
+                    display:true,
+                    text:'Remaining Fuel'
                 },
-                options: {
-                    title:{
-                        display:true,
-                        text:'Remaining Fuel'
-                    },
-                    scales: {
-                        xAxes: [{
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        categorySpacing: 0,
+                        barPercentage: 0.35
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
                             display: true,
-                            categorySpacing: 0,
-                            barPercentage: 0.35
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Gas (gallons)'
-                            },
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
+                            labelString: 'Gas (gallons)'
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
                 }
             }
-            $scope.remainingFuelChart = new Chart(context, config);
-        });
+        }
+
+        $scope.remainingFuelChart = new Chart(context, config);
     }
 
     var gasConsumptionChart = function($scope){
@@ -205,33 +197,28 @@ angular.module('ChartService',[])
         var getCurrentSpeed = function(){
             var id = Number($scope.selectedVehicle);
             var data = $scope.vehicleData.get(id);
-            // var url = "http://35.193.191.2:8080/vehicle/" + $scope.selectedVehicle;
-            // $.get(url, function(data, status){
-                // console.log("Live mrSpeed: " + data.mrSpeed);
-                var fakeSpeed = Math.ceil(55 + Math.random() * 10);
-                var speed = data.mrSpeed;
-                var fakeLabel = getFormattedTime();
-                if($scope.speedArray.length > 15){
-                    $scope.speedArray.shift();
-                    $scope.labelArray.shift();
-                }
-                $scope.speedArray.push(speed);
-                $scope.labelArray.push(fakeLabel);
-                // newConfig.data.datasets.forEach(function(dataset){
-                //  dataset.data = $scope.speedArray;
-                // });
-                $scope.currentSpeedChart.update();
-            // });
+            // var speed = Math.ceil(55 + Math.random() * 10);
+            var speed = data.mrSpeed;
+            var label = getFormattedTime();
+
+            if($scope.speedArray.length > 15){
+                $scope.speedArray.shift();
+                $scope.labelArray.shift();
+            }
+            $scope.speedArray.push(speed);
+            $scope.labelArray.push(label);
+            $scope.currentSpeedChart.update();
         }
         getCurrentSpeed();
         $scope.currentSpeedInterval = $interval(getCurrentSpeed, 500);
     }
 
     var engineTemperatureChart = function($scope){
-        var engineTemperature = 50;
-        var engineTemperatureMaxThreshold = 65;
-        // var engineTemperature = $scope.vehicleData.get(Number($scope.selectedVehicle)).engineTemperature;
-        // var engineTemperatureMaxThreshold = $scope.vehicleData.get(Number($scope.selectedVehicle)).engineTemperatureMaxThreshold;
+        // var engineTemperature = 50;
+        // var engineTemperatureMaxThreshold = 65;
+        console.log($scope.vehicleData.get(Number($scope.selectedVehicle)))
+        var engineTemperature = $scope.vehicleData.get(Number($scope.selectedVehicle)).mrEngineTemp;
+        var engineTemperatureMaxThreshold = $scope.vehicleData.get(Number($scope.selectedVehicle)).mrEngineLoad;
 
         var context = document.getElementById("engineTemperatureCanvas");
         var chartData = {
