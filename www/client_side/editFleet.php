@@ -16,7 +16,7 @@
 			<h2>Add New Vehicle</h2>
 			<form class="form-horizontal">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="email">Vehicle ID:</label>
+					<label class="control-label col-sm-2">New Vehicle Information:</label>
 					<div class="col-sm-2">
 						<input type="text" class="form-control" ng-model="addID" placeholder="Vehicle ID">
 					</div>
