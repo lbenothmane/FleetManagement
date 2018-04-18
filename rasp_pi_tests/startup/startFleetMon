@@ -1,0 +1,23 @@
+#! /bin/sh
+# /etc/init.d/startFleetMon
+
+sleep 30
+
+sudo hologram modem connect
+
+DRIVER_FILE_LOCATION=/home/pi/did.txt
+DID=$(cat ${DRIVER_FILE_LOCATION})
+
+VID=5
+
+SERVER_URI="http://35.193.191.2:8080"
+
+# Set logging  to -l to log
+LOGGING="-l"
+
+DATE=$(date "%Y.%m.%d.%T")
+
+cd /home/pi/FleetManagement/rasp_pi_tests
+python3 fleet_monitoring_pi.py -s ${SERVER_URI} -d ${DID} -v ${VID} ${LOGGING}  >> /home/pi/log_${DATE}.txt 2>&1
+
+sudo hologram modem disconnect

@@ -1,13 +1,13 @@
 default_vehicle = {'vid': 10, 'did': 10, 'pids': [0x0D, 0x2F], 'bitrate': 500000}
 
-default_server = {'uri':  'http://35.193.87.37:8080'}
+default_server = {'uri':  'http://35.193.191.2:8080'}
 
 default_mode = "test"
 
 class ConfigStore:
     class __Singleton:
         def __init__(self):
-
+            pass
     instance = None
 
     def __init__(self):
@@ -18,46 +18,43 @@ class ConfigStore:
             self.instance.mode = default_mode
 
     def get_pids(self):
-        if hasattr(self.instance.vehicle, 'pids'):
+        if 'pids' in self.instance.vehicle:
             return self.instance.vehicle['pids']
         else:
             return default_vehicle['pids']
 
     def get_vid(self):
-        if hasattr(self.instance.vehicle, 'vid'):
-            return self.instance.vehicle['vid']
+        if 'vid' in self.instance.vehicle:
+            return str(self.instance.vehicle['vid'])
         else:
-            return default_vehicle['vid']
+            return str(default_vehicle['vid'])
 
     def get_did(self):
-        if hasattr(self.instance.vehicle, 'did'):
-            return self.instance.vehicle['did']
+        if 'did' in self.instance.vehicle:
+            return str(self.instance.vehicle['did'])
         else:
-            return default_vehicle['did']
+            return str(default_vehicle['did'])
 
     def get_bitrate(self):
-        if hasattr(self.instance.vehicle, 'bitrate'):
+        if 'bitrate' in self.instance.vehicle:
             return self.instance.vehicle['bitrate']
         else:
             return default_vehicle['bitrate']
 
     def get_server_uri(self):
-        if hasattr(self.instance.server, 'uri'):
+        if 'uri' in self.instance.server:
             return self.instance.server['uri']
         else:
             return default_server['uri']
 
     def set_vehicle(self, vehicle):
+        if 'pids' in vehicle:
+            pids = []
+            for pid in vehicle.pids:
+                if 'pid' in pid and pid['pid'] not in pids:
+                    pids.append(pid)
+            vehicle.pids = pids
         self.instance.vehicle = vehicle
 
     def set_server(self, server):
         self.instance.server = server
-
-    def set_mode(self, mode):
-        self.instance.mode = mode
-
-    def log_all(self):
-        if self.instance.mode = "test"
-            return True
-        else:
-            return False
