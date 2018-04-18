@@ -17,13 +17,16 @@ angular.module('ChartService',[])
     var individualCharts = function($scope) {
         var vehicleCharts = JSON.parse(localStorage.getItem("vehicleCharts"));
         if(vehicleCharts == null){
-            vehicleCharts = ['Current Speed', 'Engine Temperature'];
+            vehicleCharts = ['Current Speed', 'Engine Temperature', 'Engine Load'];
         }
         if(vehicleCharts.indexOf("Current Speed") > -1){
             currentSpeedChart($scope);
         }
         if(vehicleCharts.indexOf("Engine Temperature") > -1){
             engineTemperatureChart($scope);
+        }
+        if(vehicleCharts.indexOf("Engine Load") > -1){
+            engineLoadChart($scope);
         }
     }
 
@@ -40,6 +43,9 @@ angular.module('ChartService',[])
         }
         if($scope.engineTemperatureChart){
             $scope.engineTemperatureChart.destroy();
+        }
+        if($scope.engineLoadChart){
+            $scope.engineLoadChart.destroy();
         }
 
         //Turn off interval if it's active
@@ -218,11 +224,11 @@ angular.module('ChartService',[])
         // var engineTemperatureMaxThreshold = 65;
         console.log($scope.vehicleData.get(Number($scope.selectedVehicle)))
         var engineTemperature = $scope.vehicleData.get(Number($scope.selectedVehicle)).mrEngineTemp;
-        var engineTemperatureMaxThreshold = $scope.vehicleData.get(Number($scope.selectedVehicle)).mrEngineLoad;
+        var engineTemperatureMaxThreshold = 185;
 
         var context = document.getElementById("engineTemperatureCanvas");
         var chartData = {
-            labels: ['placeholder'],
+            labels: ['Engine Temperature'],
             datasets: [{
                 label: 'Engine Temperature',
                 data: [engineTemperature],
@@ -268,6 +274,51 @@ angular.module('ChartService',[])
         };
 
         $scope.engineTemperatureChart = new Chart(context, config);
+    }
+
+    var engineLoadChart = function($scope){
+        var engineLoad = $scope.vehicleData.get(Number($scope.selectedVehicle)).mrEngineLoad;
+
+        var context = document.getElementById("engineLoadCanvas");
+
+        var config = {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [
+                        engineLoad,
+                        100 - engineLoad
+                    ],
+                    backgroundColor: [
+                        getEngineLoadColor(engineLoad),
+                        window.chartColors.white
+                    ],
+                    label: 'Dataset 1'
+                }],
+                labels: [
+                    "Engine Load"
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
+
+        $scope.engineLoadChart = new Chart(context, config);
+    }
+
+    var getEngineLoadColor = function(engineLoad){
+        if(engineLoad <= 20) {
+            return "Blue";
+        }else if(engineLoad <= 40){
+            return "Green";
+        }else if(engineLoad <= 60){
+            return "Yellow";
+        }else if(engineLoad <= 80){
+            return "Orange";
+        }else{
+            return "Red";
+        }
     }
 
     var getFormattedTime = function() {

@@ -8,7 +8,7 @@ function editViewCtrl($scope, NavbarService, SessionService){
       console.log(data);
     });
 
-    $scope.vehicleOptions = ['Current Speed', 'Engine Temperature'];
+    $scope.vehicleOptions = ['Current Speed', 'Engine Temperature', 'Engine Load'];
     $scope.vehicleSelection = JSON.parse(localStorage.getItem("vehicleCharts"));
     if($scope.fleetSelection == null){
       $scope.fleetSelection = [];

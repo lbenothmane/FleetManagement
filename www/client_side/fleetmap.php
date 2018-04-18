@@ -52,6 +52,11 @@
 					<canvas id="engineTemperatureCanvas"></canvas>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-6" ng-show="engineLoadChart">
+					<canvas id="engineLoadCanvas"></canvas>
+				</div>
+			</div>
 		</div>
 
 		<script src="js/fleetmap.js"></script>
