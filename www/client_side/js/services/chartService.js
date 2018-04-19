@@ -280,6 +280,7 @@ angular.module('ChartService',[])
 
     var engineLoadChart = function($scope){
         var engineLoad = $scope.vehicleData.get(Number($scope.selectedVehicle)).mrEngineLoad;
+        engineLoad = Math.round(engineLoad);
 
         var context = document.getElementById("engineLoadCanvas");
 
