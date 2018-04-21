@@ -50,10 +50,10 @@ class ConfigStore:
     def set_vehicle(self, vehicle):
         if 'pids' in vehicle:
             pids = []
-            for pid in vehicle.pids:
+            for pid in vehicle['pids']:
                 if 'pid' in pid and pid['pid'] not in pids:
                     pids.append(pid)
-            vehicle.pids = pids
+            vehicle['pids'] = pids
         self.instance.vehicle = vehicle
 
     def set_server(self, server):

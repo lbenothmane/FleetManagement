@@ -3,6 +3,7 @@ import queue
 import time
 import os
 import config
+from config import ConfigStore
 from api_engine import API_Engine
 from threading import Thread
 
@@ -12,7 +13,7 @@ ID_SECOND_BYTE = 0x01
 PID_REQUEST = 0x7DF
 PID_RESPONSE = 0x7E8
 
-def get_request_message(self, pid):
+def get_request_message(pid):
     return can.Message(arbitration_id=PID_REQUEST, data=[ID_FIRST_BYTE, ID_SECOND_BYTE, pid, 0x00, 0x00, 0x00, 0x00, 0x00], extended_id=False)
 
 
@@ -22,7 +23,7 @@ class CANHandler(Thread):
         self.api_engine = API_Engine()
 
     def startup(self):
-        os.system("sudo /sbin/ip link set can0 up type can bitrate " + str(config.BITRATE))
+        os.system("sudo /sbin/ip link set can0 up type can bitrate " + str(ConfigStore().get_bitrate()))
         time.sleep(0.1)
         return True
 
@@ -38,7 +39,7 @@ class CANHandler(Thread):
 
     def write_requests(self):
         while True:
-            for pid in self.pids:
+            for pid in ConfigStore().get_pids():
                 message = get_request_message(pid)
                 try:
                     self.bus.send(message)
