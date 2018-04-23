@@ -6,13 +6,14 @@ import threading
 import can_interface
 import gps_interface
 import config
+from threading import Thread
 from api_engine import API_Engine
 from config import ConfigStore
 
 
-class FleetMonitorApp:
+class FleetMonitorApp(Thread):
     def __init__(self):
-        pass
+        super(FleetMonitorApp, self).__init__()
 
     def startup(self):
         result = True
@@ -22,43 +23,29 @@ class FleetMonitorApp:
         ConfigStore().set_vehicle(vehicle)
 
         # Check for PiCAN connection
-        try:
-            self.can = can_interface.CanHandler()
-            if not self.can.startup():
-                return False
-        except:
-            return False
+        self.can = can_interface.CANHandler()
+        self.can.startup()
 
         # Check for GPS connection
-        try:
-            self.gps = gps_interface.GPSHandler()
-            if not self.gps.setup():
-                return False
-        except:
-            return False
-            
-        API_Engine().start()
+        self.gps = gps_interface.GPSHandler()
+        self.gps.startup() 
+
+        return True 
 
     def run_hardware(self):
-        try:
-            self.can.start()
-            self.gps.start()
-            self.can.join(None)
-            self.gps.join(None)
-        except:
-            print("An error from the hardware occurred")
+        self.can.start()
+        self.gps.start()
+        self.can.join(None)
+        self.gps.join(None)
         self.can.shutdown()
 		
     def run(self):
-        try:
-            while True:
-                vehicle = API_Engine().get_vehicle()
-                vehicle["did"] = ConfigStore().get_did()
-                ConfigStore().set_vehicle(vehicle)
-                time.sleep(60)
-        except:
-            print("The server configuration thread experienced an error")	
-
+        while True:
+            vehicle = API_Engine().get_vehicle()
+            vehicle["vid"] = ConfigStore().get_vid()
+            vehicle["did"] = ConfigStore().get_did()
+            ConfigStore().set_vehicle(vehicle)
+            time.sleep(60)
 
 def main():
     app = FleetMonitorApp()
@@ -77,14 +64,17 @@ def main():
         API_Engine().set_logging(True)
     if args.log:
         API_Engine().set_logging(True)
+    API_Engine().start()
     if args.vehicleID and args.driverID:
         vehicle = {"vid": args.vehicleID}
         vehicle["did"] = args.driverID
         vehicle["pids"] = []
         ConfigStore().set_vehicle(vehicle)
     if app.startup():
+        app.start()
+        time.sleep(5)
+        print("Starting hardware")
         app.run_hardware()
-        app.run()
 
 if __name__ == "__main__":
     main()

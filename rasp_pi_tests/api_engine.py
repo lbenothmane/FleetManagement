@@ -12,6 +12,7 @@ class API_Engine(Thread):
     instance = None
     
     def __init__(self):
+        super(API_Engine, self).__init__()
         if not API_Engine.instance:
             API_Engine.instance = API_Engine.__Singleton()
             self.instance.log = False
@@ -54,6 +55,7 @@ class API_Engine(Thread):
         response = ""
         if self.instance.log:
             print(type + " " + url + " " + str(body))
+            time.sleep(.5)
         if self.instance.send:
             if type == "put":
                 response = requests.put(url=url, json=body)
@@ -65,8 +67,5 @@ class API_Engine(Thread):
                 else:
                     response = requests.delete(url=url)
             elif type == "get":
-                if body:
-                    response = requests.get(url=url, params=body)
-                else:
-                    response = requests.get(url=url)
+                response = requests.get(url=url)
         return response

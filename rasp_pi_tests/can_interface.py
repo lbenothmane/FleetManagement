@@ -18,7 +18,7 @@ def get_request_message(pid):
 
 
 class CANHandler(Thread):
-    def __init__(self, bitrate, pids):
+    def __init__(self):
         super(CANHandler, self).__init__()
         self.api_engine = API_Engine()
 
@@ -41,11 +41,8 @@ class CANHandler(Thread):
         while True:
             for pid in ConfigStore().get_pids():
                 message = get_request_message(pid)
-                try:
-                    self.bus.send(message)
-                    time.sleep(0.05)
-                except can.CanError:
-                    pass
+                self.bus.send(message)
+                time.sleep(0.05)
 
             time.sleep(2)
 
@@ -67,12 +64,13 @@ class CANHandler(Thread):
                 time.sleep(.1)
 
 def main():
-    can = CANHandler(ConfigStore().get_bitrate(), ConfigStore().get_pids())
+    can = CANHandler()
     can.api_engine.set_logging(True)
     can.api_engine.set_send(False)
     can.startup()
     try:
         can.start()
+        can.api_engine.start()
     except Exception:
         can.shutdown()
 

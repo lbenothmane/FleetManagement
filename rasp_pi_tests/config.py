@@ -1,4 +1,4 @@
-default_vehicle = {'vid': 10, 'did': 10, 'pids': [0x0D, 0x2F], 'bitrate': 500000}
+default_vehicle = {'vid': 5, 'did': 10, 'pids': [0x0D, 0x2F, 0x04, 0x05], 'bitrate': 500000}
 
 default_server = {'uri':  'http://35.193.191.2:8080'}
 
@@ -52,7 +52,7 @@ class ConfigStore:
             pids = []
             for pid in vehicle['pids']:
                 if 'pid' in pid and pid['pid'] not in pids:
-                    pids.append(pid)
+                    pids.append(pid['pid'])
             vehicle['pids'] = pids
         self.instance.vehicle = vehicle
 

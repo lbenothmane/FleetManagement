@@ -15,19 +15,10 @@ class GPSHandler(Thread):
 		
     def run(self):
         while True:
-            try:
-                time.sleep(1)
-                report = self.session.next()
-                if report['class'] == 'TPV':
-                    if hasattr(report, 'lat') and hasattr(report, 'lon'):
-                        self.api_engine.send_pos(report.lat, report.lon)
-            except KeyError:
-                pass
-            except KeyboardInterrupt:
-                print("")
-                quit()
-            except StopIteration:
-                quit()
+            time.sleep(1)
+            report = self.session.next()
+            if report['class'] == 'TPV':
+                self.api_engine.pos_send(report.lat, report.lon)
 
 def main():
     gps = GPSHandler()
@@ -35,6 +26,7 @@ def main():
     gps.api_engine.set_send(False)
     if gps.startup():
         gps.start()
+        gps.api_engine.start()
 
 if __name__ == "__main__":
     main()
