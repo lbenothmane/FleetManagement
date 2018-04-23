@@ -46,7 +46,7 @@
                 <a href="docs/Status Report 4.pdf">Report 4</a></br>
                 <a href="docs/Status Report 5.pdf">Report 5</a></br>
                 <a href="docs/Status Report 6.pdf">Report 6</a></br>
-                <!-- <a href="docs/Status Report 7.pdf">Report 7</a></br> -->
+                <a href="docs/Status Report 7.pdf">Report 7</a></br>
             </div>
         </div>
     </div>
