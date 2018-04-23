@@ -234,13 +234,7 @@ angular.module('ChartService',[])
             datasets: [{
                 label: 'Engine Temperature',
                 data: [engineTemperature],
-                backgroundColor: 'green',
-                borderColor: 'black',
-                borderWidth: 1
-            },{
-                label: 'Engine Temperature Max Threshold',
-                data: [engineTemperatureMaxThreshold - engineTemperature],
-                backgroundColor: 'red',
+                backgroundColor: getEngineTemperatureColor(engineTemperature, engineTemperatureMaxThreshold),
                 borderColor: 'black',
                 borderWidth: 1
             }]
@@ -257,7 +251,6 @@ angular.module('ChartService',[])
                 scales: {
                     xAxes: [{
                         display: true,
-                        stacked: true,
                         categorySpacing: 0,
                         barPercentage: 0.35
                     }],
@@ -268,8 +261,7 @@ angular.module('ChartService',[])
                         },
                         ticks: {
                             beginAtZero: true
-                        },
-                        stacked: true
+                        }
                     }]
                 }
             }
@@ -308,6 +300,14 @@ angular.module('ChartService',[])
         };
 
         $scope.engineLoadChart = new Chart(context, config);
+    }
+
+    var getEngineTemperatureColor = function(engineTemperature, engineTemperatureMaxThreshold){
+        if(engineTemperature <= engineTemperatureMaxThreshold){
+            return "Green";
+        }else{
+            return "Red";
+        }
     }
 
     var getEngineLoadColor = function(engineLoad){
