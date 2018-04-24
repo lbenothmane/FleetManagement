@@ -33,6 +33,7 @@
                 <a href="/docs/design_document_v1.pdf">Design Document v1</a><br>
                 <a href="/docs/design_document_v2.pdf">Design Document v2</a><br>
                 <a href="/docs/sdmay18-18 491 Panel Presentation.pptx">Powerpoint Slides</a> <a href="/docs/sdmay18-18 491 Panel Presentation.pdf">(pdf)</a><br>
+                <a href="/docs/Final Report.pdf">Final Report</a><br>
             </div>
         </div>
     </div>
