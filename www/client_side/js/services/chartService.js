@@ -55,6 +55,14 @@ angular.module('ChartService',[])
             $interval.cancel($scope.currentSpeedInterval);
             $scope.currentSpeedInterval = undefined;
         }
+        if(angular.isDefined($scope.engineTempInterval)){
+            $interval.cancel($scope.engineTempInterval);
+            $scope.engineTempInterval = undefined;
+        }
+        if(angular.isDefined($scope.engineLoadInterval)){
+            $interval.cancel($scope.engineLoadInterval);
+            $scope.engineLoadInterval = undefined;
+        }
 
         if($scope.selectedVehicle == 0){
             this.initCharts($scope);
@@ -268,6 +276,20 @@ angular.module('ChartService',[])
         };
 
         $scope.engineTemperatureChart = new Chart(context, config);
+
+        var getCurrentEngineTemp = function(){
+            var id = Number($scope.selectedVehicle);
+            var data = $scope.vehicleData.get(id);
+            var engineTemp = data.mrEngineTemp;
+
+            config.data.datasets.forEach(function(dataset) {
+                dataset.data = [engineTemp];
+                dataset.backgroundColor = [getEngineTemperatureColor(engineTemp, 185)];
+            });
+            $scope.engineTemperatureChart.update();
+        }
+        getCurrentEngineTemp();
+        $scope.engineTempInterval = $interval(getCurrentEngineTemp, 500);
     }
 
     var engineLoadChart = function($scope){
@@ -300,6 +322,20 @@ angular.module('ChartService',[])
         };
 
         $scope.engineLoadChart = new Chart(context, config);
+
+        var getCurrentEngineLoad = function(){
+            var id = Number($scope.selectedVehicle);
+            var data = $scope.vehicleData.get(id);
+            var engineLoad = data.mrEngineLoad;
+
+            config.data.datasets.forEach(function(dataset) {
+                dataset.data = [engineLoad, 100-engineLoad];
+                dataset.backgroundColor = [getEngineLoadColor(engineLoad), window.chartColors.white];
+            });
+            $scope.engineLoadChart.update();
+        }
+        getCurrentEngineLoad();
+        $scope.engineLoadInterval = $interval(getCurrentEngineLoad, 500);
     }
 
     var getEngineTemperatureColor = function(engineTemperature, engineTemperatureMaxThreshold){

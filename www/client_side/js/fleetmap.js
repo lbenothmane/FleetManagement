@@ -36,7 +36,7 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
     }
 
     $scope.collectVehicleData = function(){ // Called whenever newest data is needed after intialization
-        console.log("firing collectVehicleData");
+        //console.log("firing collectVehicleData");
         if($scope.vehicleIDs == null){
             return;
         }
@@ -81,6 +81,7 @@ function myCtrl($scope, $interval, $window, NavbarService, MapService, ChartServ
     $scope.refresh = function(){
         MapService.updateMarkers($scope);
         $scope.collectVehicleData();
+        // $scope.updateCharts();
     }
     $interval(function(){
         $scope.refresh();
