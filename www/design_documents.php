@@ -32,8 +32,10 @@
                 <a href="/docs/project_plan_final.pdf">Project Plan Final</a></br>
                 <a href="/docs/design_document_v1.pdf">Design Document v1</a><br>
                 <a href="/docs/design_document_v2.pdf">Design Document v2</a><br>
-                <a href="/docs/sdmay18-18 491 Panel Presentation.pptx">Powerpoint Slides</a> <a href="/docs/sdmay18-18 491 Panel Presentation.pdf">(pdf)</a><br>
+                <a href="/docs/sdmay18-18 491 Panel Presentation.pptx">491 Powerpoint Slides</a> <a href="/docs/sdmay18-18 491 Panel Presentation.pdf">(pdf)</a><br>
+                <a href="/docs/sdmay18-18 492 Panel Presentation.pptx">492 Powerpoint Slides</a> <a href="/docs/sdmay18-18 492 Panel Presentation.pdf">(pdf)</a><br>
                 <a href="/docs/Final Report.pdf">Final Report</a><br>
+                <a href="/docs/Poster Layout.png">Poster</a><br>
             </div>
         </div>
     </div>
